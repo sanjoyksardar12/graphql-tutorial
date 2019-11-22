@@ -2,15 +2,33 @@ import React, { PureComponent } from "react";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import { Link } from "react-router";
+import query from "../queries/fertchSongs";
 
 class SongList extends PureComponent {
-  renderSongs(){
-    return this.props.data.songs.map(song=>{
-      return <li key={song.id} className="collection-item">{song.title}</li>
+  onSongDelete(id) {
+    this.props.mutate({ 
+      variables: { id },
+      refetchQueries:[{
+        query
+      }] 
+    });
+     
+  }
+  renderSongs() {
+    return this.props.data.songs.map(({ id, title }) => {
+      return (<li key={id} className="collection-item">
+        {title}
+        <i
+          className="material-icons"
+          onClick={() => this.onSongDelete(id)}
+        >
+          delete
+        </i>
+      </li>);
     })
   }
   render() {
-    if(this.props.data.loading){
+    if (this.props.data.loading) {
       return <div>loading..</div>
     }
     return (
@@ -18,24 +36,26 @@ class SongList extends PureComponent {
         <ul className="collection">
           {this.renderSongs()}
         </ul>
-        <Link 
-        to='/songs/new'
-        className="btn-floating btn-large red right"
+        <Link
+          to='/songs/new'
+          className="btn-floating btn-large red right"
         >
           <i className="material-icons">add</i>
         </Link>
       </div>
-     
+
     )
   }
 }
 
-const query = gql`
-  {
-    songs {
+const mutation = gql`
+  mutation DeleteSong($id:ID){
+    deleteSong(id:$id){
       id
-      title
     }
   }
 `;
-export default graphql(query)(SongList);
+
+export default graphql(mutation)(
+  graphql(query)(SongList)
+);
