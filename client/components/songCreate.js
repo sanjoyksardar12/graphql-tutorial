@@ -49,12 +49,12 @@ class SongCreate extends PureComponent {
 
 
 const mutation = gql`
-    mutation AddSong($title: String){
-        addSong(title: $title){
-          title,
+  mutation AddSong($title: String){
+      addSong(title: $title){
+        title,
 
-        }
-    }
+      }
+  }
 `;
 
 export default graphql(mutation)(SongCreate);
