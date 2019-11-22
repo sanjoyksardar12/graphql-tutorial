@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
+import { Link , hashHistory } from "react-router";
 
 class SongCreate extends PureComponent {
   constructor(props) {
@@ -17,11 +18,18 @@ class SongCreate extends PureComponent {
         title: this.state.title
       }
     })
+    .then(()=>{
+      hashHistory.push("/");
+    })
+    .catch(()=>{
+
+    })
 
   }
   render() {
     return (
       <div>
+        <Link to="/">Back</Link>
         <h3>Create new song</h3>
         <form onSubmit={this.onSubmit.bind(this)}>
           <label>Song Title: </label>
