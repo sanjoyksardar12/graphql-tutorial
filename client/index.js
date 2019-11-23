@@ -10,7 +10,9 @@ import SongList from "./components/SongList";
 import SongCreate from "./components/songCreate";
 import SongDetail from "./components/songDetail";
 
-const client = new ApolloClient({});
+const client = new ApolloClient({
+  dataIdFromObject: o => o.id
+});
 
 const Root = () => {
   return (<ApolloProvider client={client}>
